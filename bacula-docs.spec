@@ -25,6 +25,7 @@ BuildRequires:  tetex-latex
 BuildRequires:  latex2html
 BuildRequires:  tetex-dvipdfm
 BuildArch:	noarch
+BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 %{blurb}
