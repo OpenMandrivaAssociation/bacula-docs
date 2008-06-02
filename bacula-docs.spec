@@ -130,7 +130,7 @@ make
 rm -rf %{buildroot}
 
 %makeinstall
-# sysconfdir=%{buildroot}%{_sysconfdir}/%{name} scriptdir=%{buildroot}%{_libexecdir}/%{name} working_dir=%{buildroot}%{_localstatedir}/%{name}
+# sysconfdir=%{buildroot}%{_sysconfdir}/%{name} scriptdir=%{buildroot}%{_libexecdir}/%{name} working_dir=%{buildroot}%{_localstatedir}/lib/%{name}
 
 install -d -m 0755 %{buildroot}/%{_defaultdocdir}/bacula-%{version}/developers
 cp developers/*.{html,png} %{buildroot}/%{_defaultdocdir}/bacula-%{version}/developers/
