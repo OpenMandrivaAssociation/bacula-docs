@@ -2,7 +2,7 @@
 
 Summary:	Bacula Documentation
 Name:		bacula-docs
-Version:	2.4.2
+Version:	2.4.3
 Release:	%mkrel 1
 Epoch:		1
 Group:		Books/Other
@@ -112,8 +112,8 @@ mkdir src
 cat > src/version.h << EOF
 #undef  VERSION
 #define VERSION "%{version}"
-#define BDATE   "26 July 2008"
-#define LSMDATE "26Jul08"
+#define BDATE   "10 October 2008"
+#define LSMDATE "10Oct08"
 EOF
 ln -s ../src manual/src
 
