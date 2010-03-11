@@ -2,20 +2,24 @@
 
 Summary:	Bacula Documentation
 Name:		bacula-docs
-Version:	2.4.3
-Release:	%mkrel 2
+Version:	5.0.1
+Release:	%mkrel 1
 Epoch:		1
 Group:		Books/Other
 License:	GPL
 URL:		http://www.bacula.org/
 Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
-Patch0:		bacula-docs-languages_fix.diff
+Source1:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2.sig
 BuildRequires:  ghostscript-dvipdf
 BuildRequires:  tetex-latex
 BuildRequires:  latex2html
 BuildRequires:  tetex-dvipdfm
 BuildArch:	noarch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+
+%bcond_with	fr
+%bcond_with	de
+%bcond_with	es
 
 %description
 %{blurb}
@@ -29,7 +33,7 @@ features that make it easy to find and recover lost or damaged files.
 This package contains the documentation for Bacula.
 
 %package -n	bacula-doc-en
-Summary:	Bacula English Documentation in the HTML format
+Summary:	Bacula English Documentation in the HTML and PDF format
 Group:		Books/Other
 
 %description -n	bacula-doc-en
@@ -41,10 +45,11 @@ it is a network client/server based backup program. Bacula is relatively
 easy to use and efficient, while offering many advanced storage management
 features that make it easy to find and recover lost or damaged files.
 
-Contains the english manual.
+This package contains the English manual.
 
+%if %with de
 %package -n	bacula-doc-de
-Summary:	Bacula Deutsch Documentation in the HTML format
+Summary:	Bacula Deutsch Documentation in the HTML and PDF format
 Group:		Books/Other
 
 %description -n	bacula-doc-de
@@ -56,10 +61,12 @@ it is a network client/server based backup program. Bacula is relatively
 easy to use and efficient, while offering many advanced storage management
 features that make it easy to find and recover lost or damaged files.
 
-Contains the deutsch manual.
+This package contains the German manual.
+%endif
 
+%if %with fr
 %package -n	bacula-doc-fr
-Summary:	Bacula French Documentation in the HTML format
+Summary:	Bacula French Documentation in the HTML and PDF format
 Group:		Books/Other
 
 %description -n	bacula-doc-fr
@@ -71,10 +78,28 @@ it is a network client/server based backup program. Bacula is relatively
 easy to use and efficient, while offering many advanced storage management
 features that make it easy to find and recover lost or damaged files.
 
-Contains the french manual.
+This Package contains the french manual.
+%endif
+
+%if %with es
+%package -n	bacula-doc-es
+Summary:	Bacula Spanish Documentation in the HTML and PDF format
+Group:		Books/Other
+
+%description -n	bacula-doc-es
+%{blurb}
+Bacula is a set of computer programs that permit you (or the system
+administrator) to manage backup, recovery, and verification of computer
+data across a network of computers of different kinds. In technical terms,
+it is a network client/server based backup program. Bacula is relatively
+easy to use and efficient, while offering many advanced storage management
+features that make it easy to find and recover lost or damaged files.
+
+This package contains the Spanish manual.
+%endif
 
 %package -n	bacula-doc-web
-Summary:	Bacula Web Documentation in the HTML format
+Summary:	Bacula-web Documentation in the HTML and PDF format
 Group:		Books/Other
 
 %description -n	bacula-doc-web
@@ -86,95 +111,79 @@ it is a network client/server based backup program. Bacula is relatively
 easy to use and efficient, while offering many advanced storage management
 features that make it easy to find and recover lost or damaged files.
 
-Contains the bacula-web documentation
-
-%package -n	bacula-doc-dev
-Summary:	Bacula Developer Documentation in the HTML format
-Group:		Books/Other
-
-%description -n	bacula-doc-dev
-%{blurb}
-Bacula is a set of computer programs that permit you (or the system
-administrator) to manage backup, recovery, and verification of computer
-data across a network of computers of different kinds. In technical terms,
-it is a network client/server based backup program. Bacula is relatively
-easy to use and efficient, while offering many advanced storage management
-features that make it easy to find and recover lost or damaged files.
-
-Contains the developer documentation
+This package ontains the bacula-web documentation
 
 %prep
 
 %setup -q
-%patch0 -p0 -b .makedoc
-
 mkdir src
-cat > src/version.h << EOF
-#undef  VERSION
+cat > src/version.h <<EOF
 #define VERSION "%{version}"
-#define BDATE   "10 October 2008"
-#define LSMDATE "10Oct08"
+#define BDATE   "24 February 2010"
+#define LSMDATE "24Feb10
 EOF
-ln -s ../src manual/src
+
+# create dvipdf wrapper to workaround default secure mode
+# not including images
+mkdir bin
+cat > bin/dvipdf <<EOF
+#!/bin/sh
+exec /usr/bin/dvipdf -R0 "\$@"
+EOF
+chmod +x bin/dvipdf
 
 %build
-
 %configure2_5x \
-    --with-bacula=.
-cp manual/bacula/imagename_translations manual-fr/imagename_translations
-cp manual/bacula/imagename_translations manual-de/imagename_translations
+    --with-bacula=$PWD
 
+export PATH=$PWD/bin:$PATH
 make
+make -C bacula-web
 
 %install
 rm -rf %{buildroot}
-
-%makeinstall
-# sysconfdir=%{buildroot}%{_sysconfdir}/%{name} scriptdir=%{buildroot}%{_libexecdir}/%{name} working_dir=%{buildroot}%{_localstatedir}/lib/%{name}
-
-install -d -m 0755 %{buildroot}/%{_defaultdocdir}/bacula-%{version}/developers
-cp developers/*.{html,png} %{buildroot}/%{_defaultdocdir}/bacula-%{version}/developers/
-
-# bacula-web doc install 
-install -d -m 0755 %{buildroot}/%{_defaultdocdir}/bacula-%{version}/bacula-web
-cp bacula-web/*.{html,png} %{buildroot}/%{_defaultdocdir}/bacula-%{version}/bacula-web/
-
-# manual-fr doc install 
-install -d -m 0755 %{buildroot}/%{_defaultdocdir}/bacula-%{version}/manual-fr
-cp manual-fr/*.{html,png} %{buildroot}/%{_defaultdocdir}/bacula-%{version}/manual-fr/
-
-# manual-de doc install 
-install -d -m 0755 %{buildroot}/%{_defaultdocdir}/bacula-%{version}/manual-de
-cp manual-de/*.{html,png} %{buildroot}/%{_defaultdocdir}/bacula-%{version}/manual-de/
-
-# manual doc install 
-install -d -m 0755 %{buildroot}/%{_defaultdocdir}/bacula-%{version}/manual-en
-cp manual/*.{html,png} %{buildroot}/%{_defaultdocdir}/bacula-%{version}/manual-en/
-
+mkdir -p %{buildroot}%{_defaultdocdir}/bacula-%{version}/bacula-web
+cp bacula-web/bacula-web.pdf %{buildroot}%{_defaultdocdir}/bacula-%{version}
+cp bacula-web/bacula-web/*.{html,css,png} %{buildroot}%{_defaultdocdir}/bacula-%{version}/bacula-web
+cd manuals
+for i in {de,en,es,fr}/*; do
+	lang=${i%%/*}
+	module=${i##*/}
+	if [ -s $i/$module.pdf ]; then
+		mkdir -p %{buildroot}%{_defaultdocdir}/bacula-%{version}/manual-$lang
+		cp $i/$module.pdf %{buildroot}%{_defaultdocdir}/bacula-%{version}/manual-$lang
+	fi
+	if [ -d $i/$module ]; then
+		mkdir -p %{buildroot}%{_defaultdocdir}/bacula-%{version}/manual-$lang/$module
+		cp $i/$module/*.{html,css,png} %{buildroot}%{_defaultdocdir}/bacula-%{version}/manual-$lang/$module
+	fi
+done
 %clean
 rm -rf %{buildroot}
 
 %files -n bacula-doc-web
 %defattr(-, root, root)
-%{_defaultdocdir}/bacula-%{version}/bacula-web/*.png
-%{_defaultdocdir}/bacula-%{version}/bacula-web/*.html
+%{_defaultdocdir}/bacula-%{version}/bacula-web
+%{_defaultdocdir}/bacula-%{version}/bacula-web.pdf
 
-%files -n bacula-doc-dev
-%defattr(-, root, root)
-%{_defaultdocdir}/bacula-%{version}/developers/*.png
-%{_defaultdocdir}/bacula-%{version}/developers/*.html
-
+%if %with %fr
 %files -n bacula-doc-fr
 %defattr(-, root, root)
-%{_defaultdocdir}/bacula-%{version}/manual-fr/*.png
-%{_defaultdocdir}/bacula-%{version}/manual-fr/*.html
+%{_defaultdocdir}/bacula-%{version}/manual-fr
+%endif
 
+%if %with %fr
 %files -n bacula-doc-de
 %defattr(-, root, root)
-%{_defaultdocdir}/bacula-%{version}/manual-de/*.png
-%{_defaultdocdir}/bacula-%{version}/manual-de/*.html
+%{_defaultdocdir}/bacula-%{version}/manual-de
+%endif
 
 %files -n bacula-doc-en
 %defattr(-, root, root)
-%{_defaultdocdir}/bacula-%{version}/manual-en/*.png
-%{_defaultdocdir}/bacula-%{version}/manual-en/*.html
+%{_defaultdocdir}/bacula-%{version}/manual-en
+
+%if %with %fr
+%files -n bacula-doc-es
+%defattr(-, root, root)
+%{_defaultdocdir}/bacula-%{version}/manual-es
+%endif
