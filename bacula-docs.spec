@@ -2,14 +2,14 @@
 
 Summary:	Bacula Documentation
 Name:		bacula-docs
-Version:	5.0.1
+Version:	5.0.2
 Release:	%mkrel 1
 Epoch:		1
 Group:		Books/Other
 License:	GPL
 URL:		http://www.bacula.org/
-Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
-Source1:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2.sig
+Source0:	http://prdownloads.sourceforge.net/bacula/%{name}-%{version}.tar.bz2
+Source1:	http://prdownloads.sourceforge.net/bacula/%{name}-%{version}.tar.bz2.sig
 BuildRequires:  ghostscript-dvipdf
 BuildRequires:  tetex-latex
 BuildRequires:  latex2html
