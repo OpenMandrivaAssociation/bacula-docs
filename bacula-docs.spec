@@ -187,3 +187,65 @@ rm -rf %{buildroot}
 %defattr(-, root, root)
 %{_defaultdocdir}/bacula-%{version}/manual-es
 %endif
+
+
+%changelog
+* Sun Dec 05 2010 Oden Eriksson <oeriksson@mandriva.com> 1:5.0.2-2mdv2011.0
++ Revision: 610025
+- rebuild
+
+* Mon Jun 14 2010 Luca Berra <bluca@mandriva.org> 1:5.0.2-1mdv2010.1
++ Revision: 548043
+- New version 5.0.2
+
+* Thu Mar 11 2010 Luca Berra <bluca@mandriva.org> 1:5.0.1-1mdv2010.1
++ Revision: 517927
+- New version 5.0.1
+- build pdf manuals (with a workaround for dvipdf secure mode)
+- do not build french, german and spanish since they are not really there yet
+
+* Thu Sep 10 2009 Thierry Vignaud <tv@mandriva.org> 1:2.4.3-2mdv2010.0
++ Revision: 436765
+- rebuild
+
+* Mon Oct 13 2008 Oden Eriksson <oeriksson@mandriva.com> 1:2.4.3-1mdv2009.1
++ Revision: 293185
+- 2.4.3
+
+* Sun Jul 27 2008 Oden Eriksson <oeriksson@mandriva.com> 1:2.4.2-1mdv2009.0
++ Revision: 250683
+- 2.4.2
+
+* Thu Jul 10 2008 Oden Eriksson <oeriksson@mandriva.com> 1:2.4.1-1mdv2009.0
++ Revision: 233357
+- 2.4.1
+
+* Sun Jun 08 2008 Oden Eriksson <oeriksson@mandriva.com> 1:2.4.0-1mdv2009.0
++ Revision: 216853
+- 2.4.0
+
+  + Pixel <pixel@mandriva.com>
+    - adapt to %%_localstatedir now being /var instead of /var/lib (#22312)
+
+* Fri May 16 2008 Oden Eriksson <oeriksson@mandriva.com> 1:2.2.8-1mdv2009.0
++ Revision: 208103
+- 2.2.8
+- rediffed P0
+- fix rpm group
+
+* Thu Dec 20 2007 Olivier Blin <oblin@mandriva.com> 1:1.38.11-3mdv2008.1
++ Revision: 135828
+- restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+    - fix URL
+
+
+* Fri Dec 22 2006 Oden Eriksson <oeriksson@mandriva.com> 1.38.11-3mdv2007.0
++ Revision: 101483
+- Import bacula-docs
+
+* Sat Jul 08 2006 Oden Eriksson <oeriksson@mandriva.com> 1:1.38.11-3mdv2007.0
+- 1.38.11 (broken out from bacula)
+
