@@ -3,7 +3,7 @@
 Summary:	Bacula Documentation
 Name:		bacula-docs
 Version:	5.0.2
-Release:	%mkrel 2
+Release:	3
 Epoch:		1
 Group:		Books/Other
 License:	GPL
