@@ -7,7 +7,7 @@ Release:	3
 Epoch:		1
 Group:		Books/Other
 License:	GPL
-URL:		http://www.bacula.org/
+URL:		https://www.bacula.org/
 Source0:	http://prdownloads.sourceforge.net/bacula/%{name}-%{version}.tar.bz2
 Source1:	http://prdownloads.sourceforge.net/bacula/%{name}-%{version}.tar.bz2.sig
 BuildRequires:  ghostscript-dvipdf
